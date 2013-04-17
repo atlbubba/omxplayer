@@ -44,8 +44,8 @@ extern "C" {
 #if (defined USE_EXTERNAL_FFMPEG)
   #if (defined HAVE_LIBAVFILTER_AVFILTER_H)
     #include <libavfilter/avfiltergraph.h>
-    #include <libavfilter/buffersink.h>
-    #include <libavfilter/avcodec.h>
+//    #include <libavfilter/buffersink.h>
+    #include <libavcodec/avcodec.h>
   #elif (defined HAVE_FFMPEG_AVFILTER_H)
     #include <ffmpeg/avfiltergraph.h>
     #include <ffmpeg/buffersink.h>
@@ -70,20 +70,20 @@ public:
   virtual int avfilter_graph_create_filter(AVFilterContext **filt_ctx, AVFilter *filt, const char *name, const char *args, void *opaque, AVFilterGraph *graph_ctx)=0;
   virtual AVFilter *avfilter_get_by_name(const char *name)=0;
   virtual AVFilterGraph *avfilter_graph_alloc(void)=0;
-  virtual AVFilterInOut *avfilter_inout_alloc()=0;
-  virtual void avfilter_inout_free(AVFilterInOut **inout)=0;
-  virtual int avfilter_graph_parse(AVFilterGraph *graph, const char *filters, AVFilterInOut **inputs, AVFilterInOut **outputs, void *log_ctx)=0;
+//  virtual AVFilterInOut *avfilter_inout_alloc()=0;
+//  virtual void avfilter_inout_free(AVFilterInOut **inout)=0;
+//  virtual int avfilter_graph_parse(AVFilterGraph *graph, const char *filters, AVFilterInOut **inputs, AVFilterInOut **outputs, void *log_ctx)=0;
   virtual int avfilter_graph_config(AVFilterGraph *graphctx, void *log_ctx)=0;
 #if LIBAVFILTER_VERSION_INT < AV_VERSION_INT(3,0,0)
-  virtual int av_vsrc_buffer_add_frame(AVFilterContext *buffer_filter, AVFrame *frame, int flags)=0;
+//  virtual int av_vsrc_buffer_add_frame(AVFilterContext *buffer_filter, AVFrame *frame, int flags)=0;
 #else
   virtual int av_buffersrc_add_frame(AVFilterContext *buffer_filter, AVFrame *frame, int flags)=0;
 #endif
   virtual void avfilter_unref_buffer(AVFilterBufferRef *ref)=0;
   virtual int avfilter_link(AVFilterContext *src, unsigned srcpad, AVFilterContext *dst, unsigned dstpad)=0;
-  virtual int av_buffersink_get_buffer_ref(AVFilterContext *buffer_sink, AVFilterBufferRef **bufref, int flags)=0;
-  virtual AVBufferSinkParams *av_buffersink_params_alloc()=0;
-  virtual int av_buffersink_poll_frame(AVFilterContext *ctx)=0;
+//  virtual int av_buffersink_get_buffer_ref(AVFilterContext *buffer_sink, AVFilterBufferRef **bufref, int flags)=0;
+//  virtual AVBufferSinkParams *av_buffersink_params_alloc()=0;
+//  virtual int av_buffersink_poll_frame(AVFilterContext *ctx)=0;
 };
 
 #if (defined USE_EXTERNAL_FFMPEG) || (defined TARGET_DARWIN)
@@ -111,6 +111,7 @@ public:
   virtual int avfilter_graph_create_filter(AVFilterContext **filt_ctx, AVFilter *filt, const char *name, const char *args, void *opaque, AVFilterGraph *graph_ctx) { return ::avfilter_graph_create_filter(filt_ctx, filt, name, args, opaque, graph_ctx); }
   virtual AVFilter *avfilter_get_by_name(const char *name) { return ::avfilter_get_by_name(name); }
   virtual AVFilterGraph *avfilter_graph_alloc() { return ::avfilter_graph_alloc(); }
+#if 0
   virtual AVFilterInOut *avfilter_inout_alloc()
   {
     return ::avfilter_inout_alloc();
@@ -123,20 +124,21 @@ public:
   {
     return ::avfilter_graph_parse(graph, filters, inputs, outputs, log_ctx);
   }
+#endif
   virtual int avfilter_graph_config(AVFilterGraph *graphctx, void *log_ctx)
   {
     return ::avfilter_graph_config(graphctx, log_ctx);
   }
 #if LIBAVFILTER_VERSION_INT < AV_VERSION_INT(3,0,0)
-  virtual int av_vsrc_buffer_add_frame(AVFilterContext *buffer_filter, AVFrame *frame, int flags) { return ::av_vsrc_buffer_add_frame(buffer_filter, frame, flags); }
+//  virtual int av_vsrc_buffer_add_frame(AVFilterContext *buffer_filter, AVFrame *frame, int flags) { return ::av_vsrc_buffer_add_frame(buffer_filter, frame, flags); }
 #else
   virtual int av_buffersrc_add_frame(AVFilterContext *buffer_filter, AVFrame* frame, int flags) { return ::av_buffersrc_add_frame(buffer_filter, frame, flags); }
 #endif
   virtual void avfilter_unref_buffer(AVFilterBufferRef *ref) { ::avfilter_unref_buffer(ref); }
   virtual int avfilter_link(AVFilterContext *src, unsigned srcpad, AVFilterContext *dst, unsigned dstpad) { return ::avfilter_link(src, srcpad, dst, dstpad); }
-  virtual int av_buffersink_get_buffer_ref(AVFilterContext *buffer_sink, AVFilterBufferRef **bufref, int flags) { return ::av_buffersink_get_buffer_ref(buffer_sink, bufref, flags); }
-  virtual AVBufferSinkParams *av_buffersink_params_alloc() { return ::av_buffersink_params_alloc(); }
-  virtual int av_buffersink_poll_frame(AVFilterContext *ctx) { return ::av_buffersink_poll_frame(ctx); }
+//  virtual int av_buffersink_get_buffer_ref(AVFilterContext *buffer_sink, AVFilterBufferRef **bufref, int flags) { return ::av_buffersink_get_buffer_ref(buffer_sink, bufref, flags); }
+//  virtual AVBufferSinkParams *av_buffersink_params_alloc() { return ::av_buffersink_params_alloc(); }
+//  virtual int av_buffersink_poll_frame(AVFilterContext *ctx) { return ::av_buffersink_poll_frame(ctx); }
   // DLL faking.
   virtual bool ResolveExports() { return true; }
   virtual bool Load() {
