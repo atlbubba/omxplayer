@@ -41,9 +41,11 @@ COMXOverlayCodecText::~COMXOverlayCodecText()
 
 bool COMXOverlayCodecText::Open(COMXStreamInfo &hints)
 {
+#if 0
   m_bIsSSA = (hints.codec == AV_CODEC_ID_SSA);
   if(hints.codec == AV_CODEC_ID_SUBRIP || hints.codec == AV_CODEC_ID_SSA)
     return true;
+#endif
   return false;
 }
 
