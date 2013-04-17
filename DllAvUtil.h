@@ -38,6 +38,7 @@ extern "C" {
     #include <libavutil/avutil.h>
     #include <libavutil/crc.h>
     #include <libavutil/fifo.h>
+    #include <libavutil/mathematics.h>
     // for LIBAVCODEC_VERSION_INT:
     #include <libavcodec/avcodec.h>
   #elif (defined HAVE_FFMPEG_AVUTIL_H)
@@ -106,7 +107,7 @@ public:
   virtual AVDictionaryEntry *av_dict_get(AVDictionary *m, const char *key, const AVDictionaryEntry *prev, int flags) = 0;
   virtual int av_dict_set(AVDictionary **pm, const char *key, const char *value, int flags)=0;
   virtual int av_samples_get_buffer_size (int *linesize, int nb_channels, int nb_samples, enum AVSampleFormat sample_fmt, int align) = 0;
-  virtual int64_t av_get_default_channel_layout(int nb_channels)=0;
+  virtual int64_t av_get_channel_layout(const char *name)=0;
   virtual void av_log_set_level(int level) = 0;
 };
 
@@ -143,7 +144,7 @@ public:
   virtual int av_dict_set(AVDictionary **pm, const char *key, const char *value, int flags) { return ::av_dict_set(pm, key, value, flags); }
   virtual int av_samples_get_buffer_size (int *linesize, int nb_channels, int nb_samples, enum AVSampleFormat sample_fmt, int align)
     { return ::av_samples_get_buffer_size(linesize, nb_channels, nb_samples, sample_fmt, align); }
-  virtual int64_t av_get_default_channel_layout(int nb_channels) { return ::av_get_default_channel_layout(nb_channels); }
+  virtual int64_t av_get_channel_layout(const char *name) { return ::av_get_channel_layout(name); }
   virtual void av_log_set_level(int level) { ::av_log_set_level(level); };
 
    // DLL faking.
