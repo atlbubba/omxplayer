@@ -83,7 +83,9 @@ bool OMXPlayerSubtitles::Open(size_t stream_count,
   if(!Create())
     return false;
 
+#if 0
   m_mailbox.send(Message::Flush{m_external_subtitles});
+#endif
 
 #ifndef NDEBUG
   m_open = true;
@@ -96,11 +98,15 @@ void OMXPlayerSubtitles::Close() BOOST_NOEXCEPT
 {
   if(Running())
   {
+#if 0
     m_mailbox.send(Message::Stop{});
+#endif
     StopThread();
   }
 
+#if 0
   m_mailbox.clear();
+#endif
   m_subtitle_buffers.clear();
 
 #ifndef NDEBUG
@@ -222,6 +228,7 @@ RenderLoop(const string& font_path,
                       0, 1000);
     }
 
+#if 0
     m_mailbox.receive_wait(chrono::milliseconds(timeout),
       [&](Message::Push&& args)
       {
@@ -249,6 +256,7 @@ RenderLoop(const string& font_path,
       {
         exit = true;
       });
+#endif
 
     if(exit) break;
 
@@ -296,7 +304,9 @@ void OMXPlayerSubtitles::FlushRenderer()
 
   if(GetUseExternalSubtitles())
   {
+#if 0
     m_mailbox.send(Message::Flush{m_external_subtitles});
+#endif
   }
   else
   {
@@ -304,7 +314,9 @@ void OMXPlayerSubtitles::FlushRenderer()
     assert(!m_subtitle_buffers.empty());
     for(auto& s : m_subtitle_buffers[m_active_index])
       flush.subtitles.push_back(s);
+#if 0
     m_mailbox.send(move(flush));
+#endif
   }
 }
 
@@ -317,10 +329,12 @@ void OMXPlayerSubtitles::Flush(double pts) BOOST_NOEXCEPT
 
   if(GetVisible())
   {
+#if 0
     if(GetUseExternalSubtitles())
       m_mailbox.send(Message::Seek{static_cast<int>(pts/1000)});
     else
       m_mailbox.send(Message::Flush{});
+#endif
   }
 }
 
@@ -329,7 +343,9 @@ void OMXPlayerSubtitles::Resume() BOOST_NOEXCEPT
   assert(m_open);
 
   m_paused = false;
+#if 0
   m_mailbox.send(Message::SetPaused{false});
+#endif
 }
 
 void OMXPlayerSubtitles::Pause() BOOST_NOEXCEPT
@@ -337,7 +353,9 @@ void OMXPlayerSubtitles::Pause() BOOST_NOEXCEPT
   assert(m_open);
 
   m_paused = true;
+#if 0
   m_mailbox.send(Message::SetPaused{true});
+#endif
 }
 
 void OMXPlayerSubtitles::SetUseExternalSubtitles(bool use) BOOST_NOEXCEPT
@@ -355,7 +373,9 @@ void OMXPlayerSubtitles::SetDelay(int value) BOOST_NOEXCEPT
   assert(m_open);
 
   m_delay = value;
+#if 0
   m_mailbox.send(Message::SetDelay{value});
+#endif
 }
 
 void OMXPlayerSubtitles::SetVisible(bool visible) BOOST_NOEXCEPT
@@ -375,7 +395,9 @@ void OMXPlayerSubtitles::SetVisible(bool visible) BOOST_NOEXCEPT
     if(m_visible)
     {
       m_visible = false;
+#if 0
       m_mailbox.send(Message::Flush{});
+#endif
     }
   }
 }
@@ -436,11 +458,13 @@ bool OMXPlayerSubtitles::AddPacket(OMXPacket *pkt, size_t stream_index) BOOST_NO
     return true;
   }
 
+#if 0
   if(pkt->hints.codec != AV_CODEC_ID_SUBRIP && 
      pkt->hints.codec != AV_CODEC_ID_SSA)
   {
     return true;
   }
+#endif
 
   auto start = static_cast<int>(pkt->pts/1000);
   auto stop = start + static_cast<int>(pkt->duration/1000);
@@ -460,7 +484,9 @@ bool OMXPlayerSubtitles::AddPacket(OMXPacket *pkt, size_t stream_index) BOOST_NO
      GetVisible() &&
      stream_index == GetActiveStream())
   {
+#if 0
     m_mailbox.send(Message::Push{{start, stop, move(text_lines)}});
+#endif
   }
 
   return true;

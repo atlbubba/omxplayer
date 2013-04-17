@@ -23,7 +23,7 @@
 #include "OMXClock.h"
 #include "OMXOverlayCodecText.h"
 #include "Subtitle.h"
-#include "utils/Mailbox.h"
+//#include "utils/Mailbox.h"
 
 #include <boost/config.hpp>
 #include <boost/circular_buffer.hpp>
@@ -122,12 +122,14 @@ private:
   COMXOverlayCodecText                          m_subtitle_codec;
   std::vector<Subtitle>                         m_external_subtitles;
   std::vector<boost::circular_buffer<Subtitle>> m_subtitle_buffers;
+#if 0
   Mailbox<Message::Stop,
           Message::Flush,
           Message::Push,
           Message::Seek,
           Message::SetPaused,
           Message::SetDelay>                    m_mailbox;
+#endif
   bool                                          m_paused;
   bool                                          m_visible;
   bool                                          m_use_external_subtitles;
