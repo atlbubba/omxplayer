@@ -26,7 +26,7 @@
 #include "DynamicDll.h"
 #include "DllAvCodec.h"
 #include "DllAvFormat.h"
-#include "DllSwResample.h"
+//#include "DllSwResample.h"
 #include "utils/log.h"
 
 extern "C" {
