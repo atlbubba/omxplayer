@@ -8,38 +8,30 @@ standalone.
 Downloading OMXPlayer
 ---------------------
 
-    git clone git://github.com/huceke/omxplayer.git
+    git clone git://github.com/gstein/omxplayer.git
 
 Compiling OMXPlayer
 -------------------
 
-GCC version 4.7 is required.
+This fork of huceke/omxplayer is intended for building natively on
+the Raspberry Pi device under the Raspbian distribution. No
+configuration is needed. Simple:
 
-### Cross Compiling
-
-You need the content of your sdcard somewhere mounted or copied. There might be
-development headers to install on the running Pi system for the crosscompiling.
-
-Edit Makefile.include and change the settings according your locations.
-
-    make ffmpeg
     make
-    make dist
+
+This will produce `omxplayer.bin` within the build directory.
 
 Installing OMXPlayer
 --------------------
 
-Copy over `omxplayer-dist/*` to the Pi `/`. You may want to specify a valid font
-path inside the `omxplayer` shell script.
+The `omxplayer` script can be used to run omxplayer.bin.
 
-### Compiling on the Pi
+Note: Raspbian installs the omxplayer package by default. The script
+looks for that package. Tweak the script, or uninstall the package.
 
-You can also compile it on the PI the native way ;)
-Run this script (which will install packages and update firmware)
-    ./prepare-native-raspbian.sh
-and build with
-    make ffmpeg
-    make
+NOTE: I have used a custom script to test omxplayer.bin, rather than
+the included `omxplayer` script. I need to set up a better test
+environment to tweak `omxplayer`. Just edit the script for your setup.
 
 Using OMXPlayer
 ---------------
