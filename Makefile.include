@@ -28,6 +28,7 @@ LDFLAGS		+= -L$(BUILDROOT)/firmware/opt/vc/lib -L$(BUILDROOT)/ffpmeg -L/lib -L/u
 INCLUDES	+= -I/opt/vc/include/interface/vcos/pthreads \
 			-I/opt/vc/include \
 			-I/opt/vc/include/interface/vmcs_host \
+			-I/opt/vc/include/interface/vmcs_host/linux \
 			-I/home/pi/local/include \
 			-I/usr/include \
 			-I/usr/include/freetype2
