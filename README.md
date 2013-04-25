@@ -14,8 +14,17 @@ Compiling OMXPlayer
 -------------------
 
 This fork of huceke/omxplayer is intended for building natively on
-the Raspberry Pi device under the Raspbian distribution. No
-configuration is needed. Simple:
+the Raspberry Pi device under the Raspbian distribution.
+
+The following packages should be installed first:
+
+    libavcodec-dev
+    libavdevice-dev
+    libavfilter-dev
+    libboost-dev
+    libpcre3-dev
+
+No configuration is needed. Simply:
 
     make
 
